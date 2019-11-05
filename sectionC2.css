@@ -1,0 +1,11 @@
+.outer{
+	display: inline-block;
+	width: 70%
+	border: 10px solid black;
+	background: #66ff1a;
+	margin-top: 10px;
+}
+.title{
+	font-weight: bold;
+	
+}

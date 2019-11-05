@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" type="text/css" href="sectionC2.css">
+	<meta charset="UTF-8">
+	<title>Section C</title>
+</head>
+<body>
+	Book:<input type="text" id="search"><br/>
+	<button onclick="Search()">Search</button>
+	<div id="show"></div>
+</body>
+<script type="text/javascript">
+	
+	function Search(){
+	var book = document.getElementById("search");
+	var url = "https://www.googleapis.com/books/v1/volumes?q="+book.value;
+	console.log(url);
+	getData(url,showdata);
+	}
+	function showdata(data) {
+		console.log(data);
+		var arr = [];
+		for (var i = 0; i <=9; i++) {
+			var title = data.items[i].volumeInfo.title;
+			var desc = data.items[i].volumeInfo.description;
+			var bookdet = {};
+			bookdet.name = title;
+			if(desc==""||desc== " "||desc==undefined){
+				bookdet.desc = "No description";
+			}
+			else{
+				bookdet.desc = desc;
+			}
+			arr.push(bookdet);
+		}
+		display(arr);
+	
+	}
+	function getData(url,fnResponse) {
+	 		fetch(url)
+	 		.then(response=>{
+	 			return response.json();
+	 		})
+	 		.then(fnResponse)
+	 		.catch(err =>console.log(err));
+	 }
+	 function display(arr1) {
+	 	var disp = document.getElementById("show");
+	 	var str = "";
+	 	for (var i = 0; i < arr1.length; i++) {
+	 		var title = "<div class=title> Title:"+arr1[i].name+"</div><br/>";
+	 		var descr = arr1[i].desc;
+	 		var k = strcheck(descr);
+	 		var desc  = "<div class=desc> Description:"+k+"</div>";
+	 		var row = "<div class=outer>"+title+desc+"</div><br/>";
+	 		str = str + row;
+	 	}
+	 	disp.innerHTML=str;
+	 }
+	 function strcheck(str) {
+	 	console.log(str);
+		var len = str.length;
+		if(len>20){
+			var str1 = str.substring(0,20)+ "<details >"+str.substring(20,len)+"</details>";
+			return str1;
+		}
+		else{
+			return str;
+		}
+	}
+</script>
+</html>
